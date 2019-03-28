@@ -5,3 +5,7 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+require_relative '../lib/tasks/load_vocabulary_pvb.rb'
+
+pvb_vocabulary = read_vocabulary_pvb
+
