@@ -9,3 +9,6 @@ require_relative '../lib/tasks/load_vocabulary_pvb.rb'
 
 pvb_vocabulary = read_vocabulary_pvb
 
+pvb_vocabulary.each do |word|
+  Word.create!(word)
+end
