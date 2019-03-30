@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 2019_03_28_171133) do
   end
 
   create_table "words", force: :cascade do |t|
+    t.string "origin"
     t.integer "level"
     t.integer "chapter"
     t.string "port_word"

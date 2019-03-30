@@ -1,6 +1,7 @@
 class CreateWords < ActiveRecord::Migration[5.2]
   def change
     create_table :words do |t|
+      t.string :origin
       t.integer :level
       t.integer :chapter
       t.string :port_word

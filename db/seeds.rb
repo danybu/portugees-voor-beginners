@@ -6,9 +6,17 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 require_relative '../lib/tasks/load_vocabulary_pvb.rb'
+require_relative '../lib/tasks/load_vocabulary_kosmos.rb'
 
+
+puts "seeding words from portugees voor beginners"
 pvb_vocabulary = read_vocabulary_pvb
-
 pvb_vocabulary.each do |word|
+  Word.create!(word)
+end
+
+puts "seeding words from kosmos"
+kosmos_vocabulary = read_vocabulary_kosmos
+kosmos_vocabulary.each do |word|
   Word.create!(word)
 end

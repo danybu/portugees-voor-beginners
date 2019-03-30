@@ -1,9 +1,10 @@
 require 'nokogiri'
+require 'open-uri'
 
 def open_file_vocabulary_pvb
-filepath = '../assets/original_csvs/PVB_AlleVocab_Numbers_Manual.html'
-file      = File.open(filepath)
-return Nokogiri::XML(file)
+  # filepath = Rails.root.join "lib", "assets", "PVB_AlleVocab_Numbers_Manual.html"
+  file = File.open('./lib/assets/original_csvs/PVB_AlleVocab_Numbers_Manual.html')
+  return Nokogiri::XML(file)
 end
 
 def read_vocabulary_pvb
@@ -11,6 +12,7 @@ def read_vocabulary_pvb
   open_file_vocabulary_pvb.root.xpath('//tr').each do |row|
     tds = row.xpath('td')
     res_array << {
+      origin: 'pvb',
       level: tds[0].text,
       chapter: tds[1].text,
       port_word: tds[2].text,
@@ -29,6 +31,5 @@ def test
   genres = pvb_vocabulary.map { |voc_hash| voc_hash[:genre] }.uniq
   puts genres
 end
-
 
 
