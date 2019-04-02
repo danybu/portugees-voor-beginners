@@ -1,5 +1,5 @@
 <aside class="dictionarybar">
- <%= form_for "lookup" url: lookup_path do |f| %>
-  <%= f.text_field :name %>
+ <%= form_for "lookup", url: lookup_path, html: { method: 'GET' } do |f| %>
+  <%= f.text_field :port_word %>
  <% end %>
 </aside>

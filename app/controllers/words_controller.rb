@@ -3,7 +3,7 @@ class WordsController < ApplicationController
   end
 
   def lookup
-    @port_word = params[:port_word]
-
+    # raise
+    @port_word = params[:lookup][:port_word]
   end
 end
