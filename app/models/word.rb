@@ -8,22 +8,30 @@ class Word < ApplicationRecord
   using: {
     tsearch: { dictionary: "portuguese", prefix: false }
   }
+  pg_search_scope :search_by_nl_word,
+  against: [:nl_translation],
+  using: {
+    tsearch: { dictionary: "dutch", prefix: false }
+  }
 
-  def self.lookup_port_word(word)
+  def self.lookup_word(word)
+    # portuguese to dutch
     exact_words = Word.where("port_word ILIKE :query", query: word)
     guessed_words = (Word.search_by_port_word(word) + Word.where("port_word ILIKE :query", query: "%" + word + "%")).uniq.first(15)
     guessed_words -= exact_words
     # todo conjugations
-    return { exact: exact_words, guessed: guessed_words }
+    # dutch to portuguese
+    nl_words = (Word.search_by_nl_word(word) + Word.where("nl_translation ILIKE :query", query: "%" + word + "%")).uniq.first(15)
+    return { exact: exact_words, guessed: guessed_words, nl: nl_words }
   end
 
-  def self.lookup_port_word_to_html(word)
-    word_lines = lookup_port_word(word)
+  def self.lookup_word_to_html(word)
+    word_lines = lookup_word(word)
     return "<p>geen resultaten gevonden</p>" if word_lines.size.zero?
 
     res_html = ''
     if !word_lines[:exact].empty?
-      res_html += '<h3>gevonden vertaling:</h3>'
+      res_html += '<h3 class="dictionary-h3">gevonden vertaling:</h3>'
       res_html += '<table class="dictionary">'
       word_lines[:exact].each do |exact_line|
         res_html += "<tr>#{word_line_to_html(exact_line)}</tr>"
@@ -32,9 +40,17 @@ class Word < ApplicationRecord
     end
     if !word_lines[:guessed].empty?
       res_html += '<table class="dictionary">'
-      res_html += "<h3>relevante woorden:</h3>"
+      res_html += '<h3 class="dictionary-h3">relevante woorden:</h3>'
       word_lines[:guessed].each do |guessed_line|
         res_html += "<tr>#{word_line_to_html(guessed_line)}</tr>"
+      end
+      res_html += "</table>"
+    end
+    if !word_lines[:nl].empty?
+      res_html += '<h3 class="dictionary-h3">nederlands --> portugees</h3>'
+      res_html += '<table class="dictionary">'
+      word_lines[:nl].each do |exact_line|
+        res_html += "<tr>#{word_line_to_html(exact_line)}</tr>"
       end
       res_html += "</table>"
     end
