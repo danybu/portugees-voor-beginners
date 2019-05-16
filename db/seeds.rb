@@ -8,6 +8,7 @@
 require_relative '../lib/tasks/load_vocabulary_pvb.rb'
 require_relative '../lib/tasks/load_vocabulary_kosmos.rb'
 
+ User.create!(email:"dany.dany@dany", password:"danydany");
 
 puts "seeding words from portugees voor beginners"
 pvb_vocabulary = read_vocabulary_pvb
@@ -20,3 +21,4 @@ kosmos_vocabulary = read_vocabulary_kosmos
 kosmos_vocabulary.each do |word|
   Word.create!(word)
 end
+
